@@ -1,55 +1,66 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    IMAGE = "asha12345/hostelbuddy"
-    TAG = "${env.BUILD_NUMBER}"
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
+    environment {
+        IMAGE_NAME = "hostelproject"
+        DOCKER_HUB_USER = "asha12345"    
     }
 
-    stage('Build Docker Image') {
-      steps {
-        script {
-          sh "docker build -t ${IMAGE}:${TAG} ."
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo '📦 Checking out source code...'
+                checkout scm
+            }
         }
-      }
+
+        stage('Build Docker Image') {
+            steps {
+                echo '🚀 Building Docker image...'
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Run Container (Test)') {
+            steps {
+                echo '🏃 Running container for test...'
+                sh 'docker run -d -p 8080:80 --name hosteltest $IMAGE_NAME'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                echo '📤 Pushing image to DockerHub...'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', 
+                                                 usernameVariable: 'DOCKER_USER', 
+                                                 passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker tag $IMAGE_NAME $DOCKER_HUB_USER/$IMAGE_NAME:latest
+                        docker push $DOCKER_HUB_USER/$IMAGE_NAME:latest
+                        docker logout
+                    '''
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                echo '🧹 Cleaning up containers...'
+                sh '''
+                    docker stop hosteltest || true
+                    docker rm hosteltest || true
+                '''
+            }
+        }
     }
 
-    stage('Login & Push') {
-      steps {
+    post {
+        success {
+            echo '✅ Pipeline completed successfully and pushed to DockerHub!'
+        }
         
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
-                                         usernameVariable: 'DOCKER_USER',
-                                         passwordVariable: 'DOCKER_PASS')]) {
-          sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
-          sh "docker push ${IMAGE}:${TAG}"
-          
-          sh "docker tag ${IMAGE}:${TAG} ${IMAGE}:latest || true"
-          sh "docker push ${IMAGE}:latest || true"
-        }
-      }
     }
-
-    stage('Cleanup') {
-      steps {
-        sh "docker rmi ${IMAGE}:${TAG} || true"
-      }
-    }
-  }
-
-  post {
-    success {
-      echo "Pipeline succeeded: ${IMAGE}:${TAG}"
-    }
-    failure {
-      echo "Pipeline failed"
-    }
-  }
 }
+
 
