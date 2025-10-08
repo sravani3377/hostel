@@ -1,0 +1,55 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE = "yourdockerhubusername/hostelbuddy"
+    TAG = "${env.BUILD_NUMBER}"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        script {
+          sh "docker build -t ${IMAGE}:${TAG} ."
+        }
+      }
+    }
+
+    stage('Login & Push') {
+      steps {
+        // Assumes you created Jenkins credentials with id 'dockerhub-creds'
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
+                                         usernameVariable: 'DOCKER_USER',
+                                         passwordVariable: 'DOCKER_PASS')]) {
+          sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
+          sh "docker push ${IMAGE}:${TAG}"
+          // Optionally tag latest
+          sh "docker tag ${IMAGE}:${TAG} ${IMAGE}:latest || true"
+          sh "docker push ${IMAGE}:latest || true"
+        }
+      }
+    }
+
+    stage('Cleanup') {
+      steps {
+        sh "docker rmi ${IMAGE}:${TAG} || true"
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "Pipeline succeeded: ${IMAGE}:${TAG}"
+    }
+    failure {
+      echo "Pipeline failed"
+    }
+  }
+}
+

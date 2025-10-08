@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HostelBuddy — మా హాస్టల్</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: linear-gradient(135deg,#ff9a9e 0%,#fad0c4 50%,#fad0c4 100%);
+      --bg2: linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);
+      --card: rgba(255,255,255,0.85);
+      --accent: #ff6b6b;
+      --muted: #666;
+    }
+    *{box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{
+      margin:0;
+      min-height:100vh;
+      background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.08), transparent 10%),
+                  var(--bg2);
+      color:#111;
+    }
+    header{
+      padding:28px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:10px;
+      background:var(--bg1);display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      font-weight:700;color:#fff;font-size:18px;
+    }
+    h1{margin:0;font-size:20px;}
+    nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600;}
+    .hero{
+      padding:36px 24px;
+      display:grid;grid-template-columns:1fr;gap:20px;
+      align-items:center;
+    }
+    .hero-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 8px 30px rgba(15,15,15,0.06);
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(10,10,10,0.12);}
+    .room-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+    .badge{background:linear-gradient(90deg,#ffd7a8,#ffd1f0);padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px;}
+    .price{font-weight:700;color:var(--accent);}
+    .features{color:var(--muted);font-size:14px;margin-top:10px;}
+    .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;background:#222;color:#fff;}
+    footer{padding:18px 24px;color:#fff;opacity:0.9;}
+    .contact{
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .form-row{display:flex;gap:10px;}
+    input,textarea,select{
+      padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);width:100%;
+    }
+    @media(min-width:880px){
+      .hero{grid-template-columns:1fr 360px;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">HB</div>
+      <div>
+        <h1>HostelBuddy</h1>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">Comfortable. Safe. Affordable.</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#rooms">Rooms</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h2 style="margin:0 0 12px 0;font-size:28px;">Welcome to HostelBuddy — మీ కొత్త ఇంటి వాతావరణం</h2>
+      <p style="color:var(--muted);margin:0 0 20px 0;max-width:740px;">
+        Clean rooms, fast Wi-Fi, study spaces, and caring staff. పోషక ఆహారం, 24/7 సెక్యూరిటీ మరియు వార్షిక/నెలవారీ ప్లాన్లు.
+      </p>
+
+      <div id="rooms" class="hero-grid">
+        <div class="card">
+          <div class="room-title">
+            <div><strong>Single Room</strong><div style="font-size:13px;color:var(--muted);">Private bed & study</div></div>
+            <div class="badge">Popular</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="features">Free Wi-Fi • Laundry • Study Table</div>
+            <div class="price">₹6,500/mo</div>
+          </div>
+          <a class="cta" href="#contact">Book Now</a>
+        </div>
+
+        <div class="card">
+          <div class="room-title">
+            <div><strong>Double Sharing</strong><div style="font-size:13px;color:var(--muted);">Share with a friend</div></div>
+            <div class="badge">Economy</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="features">AC Option • Meals • Common Room</div>
+            <div class="price">₹4,200/mo</div>
+          </div>
+          <a class="cta" href="#contact">Book Now</a>
+        </div>
+
+        <div class="card">
+          <div class="room-title">
+            <div><strong>Deluxe (AC)</strong><div style="font-size:13px;color:var(--muted);">Comfort first</div></div>
+            <div class="badge">Premium</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="features">AC • Attached Bath • Housekeeping</div>
+            <div class="price">₹9,500/mo</div>
+          </div>
+          <a class="cta" href="#contact">Book Now</a>
+        </div>
+      </div>
+    </div>
+
+    <aside id="contact" class="card" style="height:100%;">
+      <h3 style="margin-top:0;">Contact / Booking</h3>
+      <div class="contact">
+        <input placeholder="Full name" />
+        <input placeholder="Phone or email" />
+        <select>
+          <option>Select room</option>
+          <option>Single Room</option>
+          <option>Double Sharing</option>
+          <option>Deluxe (AC)</option>
+        </select>
+        <textarea rows="4" placeholder="Message or arrival date"></textarea>
+        <a class="cta" href="mailto:info@hostelbuddy.example">Send Inquiry</a>
+      </div>
+    </aside>
+  </section>
+
+  <footer style="background:linear-gradient(90deg,#4facfe 0%,#00f2fe 100%);margin-top:28px;border-top-left-radius:18px;border-top-right-radius:18px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+      <div style="padding:14px 0;">
+        © <strong>HostelBuddy</strong> — All rights reserved.
+      </div>
+      <div style="padding:14px 0;color:rgba(255,255,255,0.95);">Phone: +91-98765-43210 · Email: info@hostelbuddy.example</div>
+    </div>
+  </footer>
+</body>
+</html>
+
